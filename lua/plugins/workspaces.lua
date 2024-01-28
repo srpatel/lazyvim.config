@@ -25,6 +25,25 @@ return {
           },
           open = {
             function()
+              -- Remove all project-specific bindings
+              if vim.g.workspaces_keymaps then
+                for _, i in ipairs(vim.g.workspaces_keymaps) do
+                  vim.keymap.del(i[1], i[2])
+                end
+              end
+              -- Load project-specific bindings
+              local keymaps = {}
+              -- If the file .nvim-workspace-bindings.lua exists in this directory, then run it!
+              local ok, result = pcall(dofile, '.nvim-workspace-bindings.lua')
+              if ok then
+                for _, i in ipairs(result) do
+                  vim.keymap.set(unpack(i))
+                  table.insert(keymaps, i)
+                end
+              end
+              vim.g.workspaces_keymaps = keymaps
+              -- Need to reset which-key somehow...
+              -- require("which-key").reset()
               -- Close all buffers
               local bufs=vim.api.nvim_list_bufs()
               for _,i in ipairs(bufs) do
