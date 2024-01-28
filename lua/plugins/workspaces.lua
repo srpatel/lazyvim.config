@@ -2,7 +2,7 @@ return {
   {
     "natecraddock/workspaces.nvim",
     config = function()
-      vim.keymap.set("n", "<leader>pp", ":Telescope workspaces<CR>", {
+      vim.keymap.set("n", "<leader>p", ":Telescope workspaces<CR>", {
         desc = "workspaces",
       })
       require("workspaces").setup({
